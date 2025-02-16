@@ -1,0 +1,182 @@
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+
+game:GetService("StarterGui"):SetCore("SendNotification",{
+    Title = "MADE BY INFINITE BACON", 
+    Text = "This Script Was Made By Infinite Bacon, Hope you enjoy!", 
+})
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+Frame.Parent = ScreenGui
+
+-- Styling the Frame
+Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Frame.BorderSizePixel = 0
+Frame.Size = UDim2.new(0, 300, 0, 250)
+Frame.Position = UDim2.new(0.5, -150, 0.5, -125)
+Frame.Name = "DraggableFrame"
+
+-- Rounded Corners
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = Frame
+UICorner.CornerRadius = UDim.new(0, 15)
+
+-- Shadow
+local ShadowFrame = Instance.new("Frame")
+ShadowFrame.Parent = ScreenGui
+ShadowFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ShadowFrame.Size = UDim2.new(0, 304, 0, 254)
+ShadowFrame.Position = UDim2.new(0.5, -152, 0.5, -127)
+ShadowFrame.Transparency = 0.5
+ShadowFrame.ZIndex = Frame.ZIndex - 1
+local UICornerShadow = Instance.new("UICorner")
+UICornerShadow.Parent = ShadowFrame
+UICornerShadow.CornerRadius = UDim.new(0, 15)
+
+-- Title Bar
+local TitleBar = Instance.new("Frame")
+TitleBar.Parent = Frame
+TitleBar.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+TitleBar.Size = UDim2.new(1, 0, 0, 30)
+TitleBar.Position = UDim2.new(0, 0, 0, 0)
+
+-- Title Label
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Parent = TitleBar
+TitleLabel.Text = "Limited Spawner"
+TitleLabel.Font = Enum.Font.SourceSansBold
+TitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Size = UDim2.new(1, 0, 0, 28)
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
+TitleLabel.TextYAlignment = Enum.TextYAlignment.Center
+TitleLabel.TextSize = 15
+
+-- Close Button
+local CloseButton = Instance.new("TextButton")
+CloseButton.Parent = TitleBar
+CloseButton.Text = "X"
+CloseButton.Font = Enum.Font.SourceSans
+CloseButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+CloseButton.BackgroundColor3 = Color3.fromRGB(250, 20, 20)
+CloseButton.Size = UDim2.new(0, 30, 0, 30)
+CloseButton.Position = UDim2.new(1, 0, 0.8, -10)
+CloseButton.AnchorPoint = Vector2.new(1, 0.5)
+CloseButton.BorderSizePixel = 0
+CloseButton.TextSize = 14
+CloseButton.Name = "CloseButton"
+
+-- Close Button Functionality
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+-- Dragging Logic
+local dragging = false
+local dragInput
+local dragStart
+local startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    Frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    ShadowFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X - 1, startPos.Y.Scale, startPos.Y.Offset + delta.Y - 1)
+end
+
+TitleBar.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = Frame.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
+
+Frame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+
+-- Text Buttons (replacing ImageButtons)
+local Button1 = Instance.new("TextButton")
+Button1.Parent = Frame
+Button1.Size = UDim2.new(0, 150, 0, 60)
+Button1.Position = UDim2.new(0, 70, 0, 60)
+Button1.Text = "Get Limiteds"
+Button1.Font = Enum.Font.SourceSansBold
+Button1.TextColor3 = Color3.fromRGB(250, 250, 2500)
+Button1.BackgroundColor3 = Color3.fromRGB(10, 109, 1000)
+Button1.Name = "Button1"
+Button1.TextSize = 16
+
+local Button2 = Instance.new("TextButton")
+Button2.Parent = Frame
+Button2.Size = UDim2.new(0, 200, 0, 50)
+Button2.Position = UDim2.new(0, 50, 0, 185)
+Button2.Text = "Made By Infinite Bacon"
+Button2.Font = Enum.Font.SourceSansBold
+Button2.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button2.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Button2.Name = "Button2"
+Button2.TextSize = 16
+
+
+-- Example Button Click Functions
+Button1.MouseButton1Click:Connect(function()
+    print("Button 1 clicked!")
+wait(2)
+game:GetService("ReplicatedStorage").rbxts_include.node_modules["@rbxts"].net.out._NetManaged.RedeemAnniversary:FireServer()
+game:GetService("ReplicatedStorage")["rbxts_include"]["node_modules"]["@rbxts"].net.out["_NetManaged"]["client_request_35"]:InvokeServer()
+wait(3)
+game:GetService("StarterGui"):SetCore("SendNotification",{
+    Title = "MADE BY INFINITE BACON", 
+    Text = "This has been redeemed, please make a new profile to try again", 
+
+})
+end)
+
+Button2.MouseButton1Click:Connect(function()
+    print("Button 2 clicked!")
+game:GetService("StarterGui"):SetCore("SendNotification",{
+    Title = "MADE BY INFINITE BACON", 
+    Text = "Please Join Our Discord", 
+	})
+end)
+
+
+Frame.Transparency = 1
+local tweenService = game:GetService("TweenService")
+
+local function createFadeInTween(object)  -- Function for reuse
+    local tweenInfo = TweenInfo.new(
+        0.5,       -- Time in seconds
+        Enum.EasingStyle.Quad,
+        Enum.EasingDirection.Out,
+        0,           -- Repeat count
+        false,
+        0
+    )
+    return tweenService:Create(object, tweenInfo, {Transparency = 0})
+end
+
+local frameTween = createFadeInTween(Frame)
+frameTween:Play(1)
+
+local button1Tween = createFadeInTween(Button1)
+button1Tween:Play(1)
+
+local button2Tween = createFadeInTween(Button2)
+button2Tween:Play(1)
